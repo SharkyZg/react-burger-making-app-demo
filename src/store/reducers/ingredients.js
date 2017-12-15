@@ -13,6 +13,10 @@ const initialState = {
     purchasable: false,
 };
 
+let newPrice = null;
+let updatedIngredients = null;
+let purchasable = null;
+
 const updatePurchaseState = (ingredients) => {
     const sum = Object.keys(ingredients).map(igKey => {
         return ingredients[igKey]
@@ -22,6 +26,34 @@ const updatePurchaseState = (ingredients) => {
     return ({ purchasable: sum > 0 });
 }
 
+const addOrRemoveIngredient = (state, action, transactionType) => {
+    const oldCount = state.ingredients[action.ingrType];
+    let updatedCount = null;
+
+    if (oldCount > 0 || transactionType === "add") {
+        const priceAddition = INGREDIENT_PRICES[action.ingrType];
+        const oldPrice = state.totalPrice;
+        if (transactionType === "add") {
+            updatedCount = oldCount + 1
+            newPrice = oldPrice + priceAddition;
+        }
+        if (transactionType === "remove") {
+            updatedCount = oldCount - 1
+            newPrice = oldPrice - priceAddition;
+        }
+        updatedIngredients = {
+            ...state.ingredients
+        };
+        updatedIngredients[action.ingrType] = updatedCount;
+
+        purchasable = updatePurchaseState(updatedIngredients);
+        return updatedIngredients, newPrice, purchasable
+    } else {
+        return null, null, null;
+    }
+}
+
+
 const reducer = (state = initialState, action) => {
     switch (action.type) {
         case actionTypes.LOAD_INGREDIENTS:
@@ -30,28 +62,27 @@ const reducer = (state = initialState, action) => {
                 ingredients: action.ingredients,
             }
         case actionTypes.ADD_INGREDIENT:
-            const oldCount = state.ingredients[action.ingrType];
-            const updatedCount = oldCount + 1;
-            const updatedIngredients = {
-                ...state.ingredients
-            };
-            updatedIngredients[action.ingrType] = updatedCount;
-            const priceAddition = INGREDIENT_PRICES[action.ingrType];
-            const oldPrice = state.totalPrice;
-            const newPrice = oldPrice + priceAddition;
-            const purchasable = updatePurchaseState(updatedIngredients);
-            return {
-                ...state,
-                ingredients: updatedIngredients,
-                totalPrice: newPrice, 
-                purchasable: purchasable,
-
+            updatedIngredients, newPrice, purchasable = addOrRemoveIngredient(state, action, "add")
+            if (updatedIngredients != null) {
+                return {
+                    ...state,
+                    ingredients: updatedIngredients,
+                    totalPrice: newPrice,
+                    purchasable: purchasable,
+                }
             }
         case actionTypes.REMOVE_INGREDIENT:
-            return {
-                ...state,
-                counter: state.counter + action.value
+            updatedIngredients, newPrice, purchasable = addOrRemoveIngredient(state, action, "remove")
+            if (updatedIngredients != null) {
+                return {
+                    ...state,
+                    ingredients: updatedIngredients,
+                    totalPrice: newPrice,
+                    purchasable: purchasable,
+                }
             }
+        default:
+            return state;
     }
     return state;
 };

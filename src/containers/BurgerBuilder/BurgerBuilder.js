@@ -15,8 +15,7 @@ import * as actionTypes from '../../store/actions'
 
 class BurgerBuilder extends Component {
 
-    state = {
-        
+    state = {      
         purchasing: false,
         loading: false,
         error: false
@@ -32,38 +31,14 @@ class BurgerBuilder extends Component {
             });
     }
 
-    removeIngredientHandler = (type) => {
-        // const oldCount = this.props.ingredients[type];
-        // if (oldCount > 0) {
-        //     const updatedCount = oldCount - 1;
-        //     const updatedIngredients = {
-        //         ...this.props.ingredients
-        //     };
-        //     updatedIngredients[type] = updatedCount;
-        //     const priceDeduction = INGREDIENT_PRICES[type];
-        //     const oldPrice = this.props.totalPrice;
-        //     const newPrice = oldPrice - priceDeduction;
-        //     this.setState({ totalPrice: newPrice, ingredients: updatedIngredients });
-        //     this.updatePurchaseState(updatedIngredients);
-        // }
-    }
-
     purchaseCancelHandler = () => {
         this.setState({ purchasing: false });
     }
 
     purchaseContinueHandler = () => {
-        const queryParams = [];
-        for (let i in this.props.ingredients) {
-            queryParams.push(encodeURIComponent(i) + '='
-                + encodeURIComponent(this.props.ingredients[i]));
-        }
-        queryParams.push('price=' + this.props.totalPrice)
-        const queryString = queryParams.join('&');
 
         this.props.history.push({
             pathname: '/checkout',
-            search: '?' + queryString
         });
     }
 
@@ -87,7 +62,7 @@ class BurgerBuilder extends Component {
                     <Burger />
                     <BuildControls
                         ingredientAdded={this.props.onAddIngredient}
-                        ingredientRemoved={this.removeIngredientHandler}
+                        ingredientRemoved={this.props.onRemoveIngredient}
                         disabled={disabledInfo}
                         purchasable={this.props.purchasable}
                         ordered={this.purchaseHandler}
@@ -125,6 +100,7 @@ const mapDispatchToProps = dispatch => {
     return {
         onLoadIngredients: (ingredients) => dispatch({ type: actionTypes.LOAD_INGREDIENTS, ingredients: ingredients }),
         onAddIngredient: (type) => dispatch({ type: actionTypes.ADD_INGREDIENT, ingrType: type }),
+        onRemoveIngredient: (type) => dispatch({ type: actionTypes.REMOVE_INGREDIENT, ingrType: type }),
     };
 };
 
