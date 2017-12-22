@@ -8,10 +8,12 @@ import App from './App';
 import registerServiceWorker from './registerServiceWorker';
 import { BrowserRouter } from 'react-router-dom';
 import ingredientsReducer from './store/reducers/ingredients'
+import orderReducer from './store/reducers/order'
 
 
 const rootReducer = combineReducers({
     inr: ingredientsReducer,
+    ord: orderReducer,
 });
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
