@@ -47,7 +47,7 @@ const addOrRemoveIngredient = (state, action, transactionType) => {
         updatedIngredients[action.ingrType] = updatedCount;
 
         purchasable = updatePurchaseState(updatedIngredients);
-        return updatedIngredients, newPrice, purchasable
+        return updatedIngredients, newPrice, purchasable;
     } else {
         return null, null, null;
     }
