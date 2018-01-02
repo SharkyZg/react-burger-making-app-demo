@@ -59,11 +59,6 @@ const addOrRemoveIngredient = (state, action, transactionType) => {
 
 const reducer = (state = initialState, action) => {
     switch (action.type) {
-        case actionTypes.LOAD_INGREDIENTS:
-            return {
-                ...state,
-                ingredients: action.ingredients,
-            }
         case actionTypes.ADD_INGREDIENT:
             updatedIngredients, newPrice, purchasable = addOrRemoveIngredient(state, action, "add")
             if (updatedIngredients != null) {
