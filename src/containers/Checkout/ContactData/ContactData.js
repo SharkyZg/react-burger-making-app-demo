@@ -105,8 +105,8 @@ class ContactData extends Component {
             price: this.props.price,
             orderData: formData
         }
-        this.props.onOrderBurger(order);
-        
+        this.props.onOrderBurger(order, this.props.token);
+
     }
 
     checkValidity(value, rules) {
@@ -114,7 +114,7 @@ class ContactData extends Component {
         if (!rules) {
             return true;
         }
-        
+
         if (rules.required) {
             isValid = value.trim() !== '' && isValid;
         }
@@ -202,13 +202,14 @@ const mapStateToProps = state => {
     return {
         ingredients: state.inr.ingredients,
         price: state.inr.totalPrice,
-        loading: state.ord.loading
+        loading: state.ord.loading,
+        token: state.auth.token
     };
 };
 
 const mapDispatchToProps = dispatch => {
     return {
-        onOrderBurger: (orderData) => dispatch(orderActions.purchaseBurger(orderData))
+        onOrderBurger: (orderData, token) => dispatch(orderActions.purchaseBurger(orderData, token))
     };
 }
 
