@@ -11,6 +11,8 @@ const initialState = {
     ingredients: null,
     totalPrice: 4,
     purchasable: false,
+    error: false,
+    building: false
 };
 
 let newPrice = null;
@@ -61,7 +63,8 @@ const reducer = (state = initialState, action) => {
                 ...state,
                 ingredients: action.ingredients,
                 totalPrice: 4,
-                error: false
+                error: false,
+                building: false
             }
         case actionTypes.ADD_INGREDIENT:
             updatedIngredients, newPrice, purchasable = addOrRemoveIngredient(state, action, "add")
@@ -71,6 +74,7 @@ const reducer = (state = initialState, action) => {
                     ingredients: updatedIngredients,
                     totalPrice: newPrice,
                     purchasable: purchasable,
+                    building: true
                 }
             }
         case actionTypes.REMOVE_INGREDIENT:
@@ -81,6 +85,7 @@ const reducer = (state = initialState, action) => {
                     ingredients: updatedIngredients,
                     totalPrice: newPrice,
                     purchasable: purchasable,
+                    building: true
                 }
             }
         case actionTypes.FETCH_INGREDIENTS_FAILED:
