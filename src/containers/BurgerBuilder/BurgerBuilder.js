@@ -16,7 +16,7 @@ import * as actions from '../../store/actions/index'
 
 class BurgerBuilder extends Component {
 
-    state = {      
+    state = {
         purchasing: false,
 
     }
@@ -37,7 +37,12 @@ class BurgerBuilder extends Component {
     }
 
     purchaseHandler = () => {
-        this.setState({ purchasing: true });
+        if (this.props.isAuthenticated) {
+            this.setState({ purchasing: true });
+        } else {
+            this.props.history.push('/auth');
+        }
+
     }
 
     render() {
@@ -60,6 +65,7 @@ class BurgerBuilder extends Component {
                         disabled={disabledInfo}
                         purchasable={this.props.purchasable}
                         ordered={this.purchaseHandler}
+                        isAuth={this.props.isAuthenticated}
                         price={this.props.totalPrice} />
                 </Aux>);
             orderSummary = (<OrderSummary
@@ -84,7 +90,8 @@ const mapStateToProps = state => {
         ingredients: state.inr.ingredients,
         totalPrice: state.inr.totalPrice,
         purchasable: state.inr.purchasable,
-        error: state.inr.error
+        error: state.inr.error,
+        isAuthenticated: state.auth.token !== null
     };
 };
 
