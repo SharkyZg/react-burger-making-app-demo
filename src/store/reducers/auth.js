@@ -2,7 +2,7 @@ import * as actionTypes from '../actions/actionTypes';
 
 const initialState = {
     token: null,
-    userId: null,
+    userID: null,
     error: null,
     loading: false,
     authRedirectPath: '/'
@@ -20,7 +20,7 @@ const reducer = (state = initialState, action) => {
             return {
                 ...state,
                 token: action.idToken,
-                userId: action.userId,
+                userID: action.userID,
                 error: null,
                 loading: false
             }
@@ -34,7 +34,7 @@ const reducer = (state = initialState, action) => {
             return {
                 ...state,
                 token: null,
-                userId: null
+                userID: null
             }
         case actionTypes.SET_AUTH_REDIRECT_PATH:
             return {
