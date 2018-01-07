@@ -9,7 +9,6 @@ class Burger extends Component {
 
 
     render() {
-        console.log(this.props.ingredients)
         let transfromedIngredients = Object.keys(this.props.ingredients).map(igKey => {
             return [...Array(this.props.ingredients[igKey])].map((_, i) => {
                 return <BurgerIngredient key={igKey + i} type={igKey} />

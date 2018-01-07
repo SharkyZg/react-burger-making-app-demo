@@ -49,9 +49,9 @@ const addOrRemoveIngredient = (state, action, transactionType) => {
         updatedIngredients[action.ingrType] = updatedCount;
 
         purchasable = updatePurchaseState(updatedIngredients);
-        return updatedIngredients, newPrice, purchasable;
+        return (updatedIngredients, newPrice, purchasable);
     } else {
-        return null, null, null;
+        return (null, null, null);
     }
 }
 
@@ -77,6 +77,7 @@ const reducer = (state = initialState, action) => {
                     building: true
                 }
             }
+            break
         case actionTypes.REMOVE_INGREDIENT:
             updatedIngredients, newPrice, purchasable = addOrRemoveIngredient(state, action, "remove")
             if (updatedIngredients != null) {
@@ -88,6 +89,7 @@ const reducer = (state = initialState, action) => {
                     building: true
                 }
             }
+            break
         case actionTypes.FETCH_INGREDIENTS_FAILED:
             return {
                 ...state,
